@@ -21,20 +21,20 @@ export default function About() {
           About Me
         </h2>
 
-        <div className="flex flex-col md:flex-row items-center gap-12">
+        <div className="flex flex-col md:flex-row items-start gap-8">
           <motion.div
             initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.9 }}
             whileInView={prefersReducedMotion ? {} : { opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="relative w-full md:w-1/3 flex-shrink-0"
+            className="relative md:sticky md:top-24 flex-shrink-0 mx-auto md:mx-0"
           >
-            <div className="mx-auto w-[200px] md:w-[300px] aspect-square rounded-full overflow-hidden ring-4 ring-gray-200 dark:ring-gray-800 bg-white filter brightness-75 contrast-125 saturate-100 dark:bg-gray-900 relative">
+            <div className="w-[140px] md:w-[180px] aspect-square rounded-full overflow-hidden ring-4 ring-gray-200 dark:ring-gray-800 bg-white filter brightness-75 contrast-125 saturate-100 dark:bg-gray-900 relative">
               <Image
                 src="/images/passport1.png"
                 alt="Passport Photo"
                 fill
-                sizes="(max-width: 768px) 200px, 300px"
+                sizes="(max-width: 768px) 140px, 180px"
                 className="object-cover filter dark:brightness-90"
                 priority
               />
@@ -46,7 +46,7 @@ export default function About() {
             whileInView={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="w-full md:w-2/3"
+            className="flex-1"
           >
             <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
               Full-Stack Developer & Software Engineer

@@ -56,10 +56,20 @@ export default function Contact() {
     if (!validateForm()) return;
     setIsSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setSubmitStatus("success");
-      setFormState({ name: "", email: "", message: "" });
-    } catch {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+      if (res.ok) {
+        setSubmitStatus("success");
+        setFormState({ name: "", email: "", message: "" });
+      } else {
+        console.error("Error response:", await res.json());
+        setSubmitStatus("error");
+      }
+    } catch (err) {
+      console.error(err);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -77,6 +87,7 @@ export default function Contact() {
         </h2>
 
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Contact Info */}
           <motion.div
             initial={prefersReducedMotion ? {} : { opacity: 0, x: -20 }}
             whileInView={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
@@ -86,7 +97,6 @@ export default function Contact() {
             <h3 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
               Contact Information
             </h3>
-
             <div className="space-y-6 mb-8">
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-xl bg-primary/10 text-primary mt-1">
@@ -104,7 +114,6 @@ export default function Contact() {
                   </a>
                 </div>
               </div>
-
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-xl bg-primary/10 text-primary mt-1">
                   <MapPin size={24} />
@@ -119,13 +128,13 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-
             <p className="text-gray-700 dark:text-gray-300">
               I’m always open to discussing new projects, creative ideas, or
               opportunities to collaborate.
             </p>
           </motion.div>
 
+          {/* Form */}
           <motion.div
             initial={prefersReducedMotion ? {} : { opacity: 0, x: 20 }}
             whileInView={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
@@ -134,9 +143,10 @@ export default function Contact() {
           >
             {submitStatus === "success" ? (
               <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-8 text-center">
-                <div className="flex justify-center mb-4 text-green-600 dark:text-green-400">
-                  <CheckCircle size={48} />
-                </div>
+                <CheckCircle
+                  size={48}
+                  className="text-green-600 dark:text-green-400 mx-auto mb-4"
+                />
                 <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
                   Message Sent!
                 </h3>
@@ -153,9 +163,10 @@ export default function Contact() {
               </div>
             ) : submitStatus === "error" ? (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-8 text-center">
-                <div className="flex justify-center mb-4 text-red-600 dark:text-red-400">
-                  <AlertCircle size={48} />
-                </div>
+                <AlertCircle
+                  size={48}
+                  className="text-red-600 dark:text-red-400 mx-auto mb-4"
+                />
                 <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
                   Something Went Wrong
                 </h3>
@@ -178,16 +189,16 @@ export default function Contact() {
                     name="name"
                     value={formState.name}
                     onChange={handleChange}
+                    placeholder=" "
                     className={`w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border ${
                       errors.name
                         ? "border-red-500 dark:border-red-500"
                         : "border-gray-300 dark:border-gray-700"
                     } focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors peer`}
-                    placeholder=" "
                   />
                   <label
                     htmlFor="name"
-                    className="absolute text-gray-600 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 peer-focus:text-primary"
+                    className="absolute left-3 top-2 z-10 bg-white dark:bg-gray-800 px-2 text-gray-600 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 peer-placeholder-shown:translate-y-1/2 peer-placeholder-shown:scale-100"
                   >
                     Your Name
                   </label>
@@ -203,16 +214,16 @@ export default function Contact() {
                     name="email"
                     value={formState.email}
                     onChange={handleChange}
+                    placeholder=" "
                     className={`w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border ${
                       errors.email
                         ? "border-red-500 dark:border-red-500"
                         : "border-gray-300 dark:border-gray-700"
                     } focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors peer`}
-                    placeholder=" "
                   />
                   <label
                     htmlFor="email"
-                    className="absolute text-gray-600 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 peer-focus:text-primary"
+                    className="absolute left-3 top-2 z-10 bg-white dark:bg-gray-800 px-2 text-gray-600 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 peer-placeholder-shown:translate-y-1/2 peer-placeholder-shown:scale-100"
                   >
                     Your Email
                   </label>
@@ -228,16 +239,16 @@ export default function Contact() {
                     value={formState.message}
                     onChange={handleChange}
                     rows={5}
+                    placeholder=" "
                     className={`w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border ${
                       errors.message
                         ? "border-red-500 dark:border-red-500"
                         : "border-gray-300 dark:border-gray-700"
                     } focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors peer`}
-                    placeholder=" "
                   />
                   <label
                     htmlFor="message"
-                    className="absolute text-gray-600 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-6 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 peer-focus:text-primary"
+                    className="absolute left-3 top-2 z-10 bg-white dark:bg-gray-800 px-2 text-gray-600 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 peer-placeholder-shown:translate-y-1/2 peer-placeholder-shown:scale-100"
                   >
                     Your Message
                   </label>
@@ -248,20 +259,10 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Honeypot field for spam protection */}
-                <div className="hidden">
-                  <input
-                    type="text"
-                    name="website"
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-                </div>
-
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>

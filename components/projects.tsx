@@ -98,6 +98,26 @@ function ProjectCard({
   prefersReducedMotion: boolean;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [showTags, setShowTags] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 640px)");
+
+  // Animation variants for the tag container
+  const tagContainerVariants = {
+    hidden: {
+      height: 0,
+      opacity: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.2,
+      },
+    },
+    visible: {
+      height: "auto",
+      opacity: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.3,
+      },
+    },
+  };
 
   return (
     <motion.div
@@ -105,13 +125,14 @@ function ProjectCard({
       whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true, margin: "-100px" }}
-      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm flex flex-col"
+      onMouseEnter={() => isDesktop && setIsHovered(true)}
+      onMouseLeave={() => isDesktop && setIsHovered(false)}
     >
+      {/* Image container */}
       <div className="relative aspect-[4/3]">
         <Image
-          src={project.image}
+          src={project.image || "/placeholder.svg"}
           alt={project.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -119,46 +140,50 @@ function ProjectCard({
           loading="lazy"
         />
 
-        <div
-          className={`absolute inset-0 bg-black/70 flex flex-col justify-center items-center p-6 transition-opacity duration-300 ${
-            isHovered ? "opacity-100" : "opacity-0 sm:opacity-0"
-          }`}
-        >
-          <div className="flex flex-wrap gap-2 justify-center mb-4">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* Desktop-only hover overlay */}
+        {isDesktop && (
+          <div
+            className={`absolute inset-0 bg-black/70 flex flex-col justify-center items-center p-6 transition-opacity duration-300 ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="flex flex-wrap gap-2 justify-center mb-4">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-          <div className="flex gap-4">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-              aria-label={`View ${project.title} on GitHub`}
-            >
-              <Github size={20} />
-            </a>
-            <a
-              href={project.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors"
-              aria-label={`View ${project.title} demo`}
-            >
-              <ExternalLink size={20} />
-            </a>
+            <div className="flex gap-4">
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                aria-label={`View ${project.title} on GitHub`}
+              >
+                <Github size={20} />
+              </a>
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                aria-label={`View ${project.title} demo`}
+              >
+                <ExternalLink size={20} />
+              </a>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      <div className="p-6">
+      {/* Project info */}
+      <div className="p-6 flex-grow">
         <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
           {project.title}
         </h3>
@@ -166,6 +191,47 @@ function ProjectCard({
           {project.description}
         </p>
       </div>
+
+      {/* Mobile-only footer with tags and action buttons - always visible */}
+      {!isDesktop && (
+        <div className="px-6 pb-6 space-y-4">
+          {/* Technology tags - always visible */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Action buttons - always visible */}
+          <div className="flex gap-3">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 h-12 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-800 min-w-[48px]"
+              aria-label={`View ${project.title} on GitHub`}
+            >
+              <Github size={20} />
+              <span>GitHub</span>
+            </a>
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 h-12 px-4 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary min-w-[48px]"
+              aria-label={`View ${project.title} demo`}
+            >
+              <ExternalLink size={20} />
+              <span>Live Demo</span>
+            </a>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
