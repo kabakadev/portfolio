@@ -3,7 +3,6 @@ import Hero from "@/components/hero";
 import TechStack from "@/components/tech-stack";
 import Projects from "@/components/projects";
 import About from "@/components/about";
-import Testimonials from "@/components/testimonials";
 import Contact from "@/components/contact";
 import LoadingSpinner from "@/components/loading-spinner";
 
@@ -28,9 +27,6 @@ export default function Home() {
         </Suspense>
         <Suspense fallback={<LoadingSpinner />}>
           <About />
-        </Suspense>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Testimonials />
         </Suspense>
         <Suspense fallback={<LoadingSpinner />}>
           <Contact />

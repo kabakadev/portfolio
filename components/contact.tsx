@@ -1,18 +1,9 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { Mail, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function Contact() {
   const [formState, setFormState] = useState({
@@ -31,23 +22,17 @@ export default function Contact() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-
-    if (!formState.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
+    if (!formState.name.trim()) newErrors.name = "Name is required";
     if (!formState.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
       newErrors.email = "Please enter a valid email address";
     }
-
     if (!formState.message.trim()) {
       newErrors.message = "Message is required";
     } else if (formState.message.length < 10) {
       newErrors.message = "Message must be at least 10 characters";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,32 +42,24 @@ export default function Contact() {
   ) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
-
-    // Clear error when user types
     if (errors[name]) {
       setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
       });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsSubmitting(true);
-
-    // Simulate form submission
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setSubmitStatus("success");
       setFormState({ name: "", email: "", message: "" });
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -96,7 +73,7 @@ export default function Contact() {
     >
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-          Get In Touch
+          Contact
         </h2>
 
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -120,27 +97,10 @@ export default function Contact() {
                     Email
                   </h4>
                   <a
-                    href="mailto:contact@example.com"
+                    href="mailto:iankabaka9114@gmail.com"
                     className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
                   >
-                    contact@example.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-primary/10 text-primary mt-1">
-                  <Phone size={24} />
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-1">
-                    Phone
-                  </h4>
-                  <a
-                    href="tel:+11234567890"
-                    className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
-                  >
-                    +1 (123) 456-7890
+                    iankabaka9114@gmail.com
                   </a>
                 </div>
               </div>
@@ -154,17 +114,15 @@ export default function Contact() {
                     Location
                   </h4>
                   <p className="text-gray-600 dark:text-gray-400">
-                    San Francisco, CA
-                    <br />
-                    Available for remote work worldwide
+                    Nakuru, Kenya
                   </p>
                 </div>
               </div>
             </div>
 
             <p className="text-gray-700 dark:text-gray-300">
-              I'm always open to discussing new projects, creative ideas, or
-              opportunities to be part of your vision.
+              I’m always open to discussing new projects, creative ideas, or
+              opportunities to collaborate.
             </p>
           </motion.div>
 
@@ -183,7 +141,7 @@ export default function Contact() {
                   Message Sent!
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 mb-6">
-                  Thank you for reaching out. I'll get back to you as soon as
+                  Thank you for reaching out. I’ll get back to you as soon as
                   possible.
                 </p>
                 <button

@@ -7,63 +7,57 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { ExternalLink, Github } from "lucide-react";
 
 const projects = [
+  // Top Strong Projects
   {
     id: 1,
-    title: "E-Commerce Platform",
+    title: "Weather Forecast",
     description:
-      "A full-featured e-commerce platform with cart, checkout, and payment processing.",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Stripe", "MongoDB"],
-    github: "https://github.com",
-    demo: "https://example.com",
+      "A weather dashboard built with Next.js featuring city search, temperature unit toggle, and a 3-day forecast.",
+    image: "/images/project_images/weather_forecast.png",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "OpenWeatherMap API"],
+    github: "https://github.com/kabakadev/weather-frontend",
+    demo: "https://weather-frontend-umber.vercel.app/",
   },
   {
     id: 2,
-    title: "Task Management App",
+    title: "Book Nook",
     description:
-      "A collaborative task management application with real-time updates.",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-    github: "https://github.com",
-    demo: "https://example.com",
+      "A React & Vite reading list manager. Create, view, and organize your favorite books with ease.",
+    image: "/images/project_images/booknook.png",
+    tags: ["React", "Vite", "Tailwind CSS"],
+    github: "https://github.com/kabakadev/book_app_frontend",
+    demo: "https://booknook254.netlify.app/",
   },
   {
     id: 3,
-    title: "Weather Dashboard",
-    description: "A weather dashboard with location search and 7-day forecast.",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["React", "OpenWeather API", "Chart.js", "Tailwind CSS"],
-    github: "https://github.com",
-    demo: "https://example.com",
+    title: "FlashLearn",
+    description:
+      "An AI-powered flashcard app with user authentication, deck & card management, and performance stats.",
+    image: "/images/project_images/flashlearn.png",
+    tags: ["React", "Vite", "Tailwind CSS", "JWT Auth"],
+    github: "https://github.com/kabakadev/flashlearn-frontend",
+    demo: "https://flashlearn254.netlify.app/",
   },
+  // Secondary Projects
   {
     id: 4,
-    title: "Blog Platform",
+    title: "Dog Breed Finder",
     description:
-      "A content management system for creating and publishing blog posts.",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["Next.js", "MDX", "Prisma", "PostgreSQL"],
-    github: "https://github.com",
-    demo: "https://example.com",
+      "Search and learn about dog breeds in this responsive React app.",
+    image: "/images/project_images/dogfinder.png",
+    tags: ["React", "Tailwind CSS", "Dog API"],
+    github: "https://github.com/kabakadev/dogfinder",
+    demo: "https://dogsfinder.netlify.app/",
   },
   {
     id: 5,
-    title: "Fitness Tracker",
+    title: "Sneakers Showcase",
     description:
-      "An application to track workouts, nutrition, and fitness progress.",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["React Native", "Firebase", "Redux", "Chart.js"],
-    github: "https://github.com",
-    demo: "https://example.com",
-  },
-  {
-    id: 6,
-    title: "Real Estate Listings",
-    description: "A platform for browsing and filtering real estate listings.",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["React", "Node.js", "MongoDB", "Google Maps API"],
-    github: "https://github.com",
-    demo: "https://example.com",
+      "A React-based sneakers showcase highlighting popular sneaker models in a clean UI.",
+    image: "/images/project_images/sneaker.png",
+    tags: ["React", "Tailwind CSS"],
+    github: "https://github.com/kabakadev/sneakers-project-app",
+    demo: "https://kabakadev.github.io/sneakers-project-app/",
   },
 ];
 
@@ -117,7 +111,7 @@ function ProjectCard({
     >
       <div className="relative aspect-[4/3]">
         <Image
-          src={project.image || "/placeholder.svg"}
+          src={project.image}
           alt={project.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

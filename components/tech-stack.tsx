@@ -1,7 +1,6 @@
 "use client";
 
-import type React from "react";
-
+import React from "react";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Code, Server, Wrench } from "lucide-react";
@@ -9,24 +8,30 @@ import { Code, Server, Wrench } from "lucide-react";
 const technologies = {
   frontend: [
     { name: "React", level: "Advanced" },
-    { name: "Next.js", level: "Advanced" },
-    { name: "TypeScript", level: "Advanced" },
+    { name: "Next.js", level: "Intermediate" },
+    { name: "TypeScript", level: "Intermediate" },
     { name: "Tailwind CSS", level: "Advanced" },
     { name: "Framer Motion", level: "Intermediate" },
+    { name: "Ripple UI", level: "Intermediate" },
+    { name: "Material UI", level: "INtermediate" },
   ],
   backend: [
-    { name: "Node.js", level: "Advanced" },
-    { name: "Express", level: "Advanced" },
-    { name: "MongoDB", level: "Intermediate" },
+    { name: "Python", level: "Advanced" },
+    { name: "Flask", level: "Intermediate" },
+    { name: "SQLAlchemy", level: "Intermediate" },
     { name: "PostgreSQL", level: "Intermediate" },
-    { name: "GraphQL", level: "Intermediate" },
+    { name: "PHP", level: "Intermediate" },
+    { name: "Laravel Framework", level: "Beginner" },
+    { name: "Guzzle HTTP", level: "Beginner" },
+    { name: "Laravel CORS", level: "Beginner" },
+    { name: "Laravel Tinker", level: "Beginner" },
   ],
   tools: [
     { name: "Git", level: "Advanced" },
     { name: "Docker", level: "Intermediate" },
-    { name: "AWS", level: "Intermediate" },
-    { name: "CI/CD", level: "Intermediate" },
-    { name: "Jest", level: "Intermediate" },
+    { name: "GitHub Actions", level: "Intermediate" },
+    { name: "Postman", level: "Intermediate" },
+    { name: "M-Pesa Daraja API", level: "Intermediate" },
   ],
 };
 
@@ -37,18 +42,9 @@ export default function TechStack() {
 
   const container = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
+  const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
   return (
     <section
@@ -80,7 +76,7 @@ export default function TechStack() {
           />
 
           <TechCategory
-            title="Tools"
+            title="Tools & APIs"
             icon={<Wrench size={24} />}
             technologies={technologies.tools}
             prefersReducedMotion={prefersReducedMotion}

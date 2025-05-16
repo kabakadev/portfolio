@@ -29,13 +29,13 @@ export default function About() {
             viewport={{ once: true, margin: "-100px" }}
             className="relative w-full md:w-1/3 flex-shrink-0"
           >
-            <div className="mx-auto w-[200px] md:w-[300px] aspect-square rounded-full overflow-hidden relative">
+            <div className="mx-auto w-[200px] md:w-[300px] aspect-square rounded-full overflow-hidden ring-4 ring-gray-200 dark:ring-gray-800 bg-white filter brightness-75 contrast-125 saturate-100 dark:bg-gray-900 relative">
               <Image
-                src="/placeholder.svg?height=600&width=600"
-                alt="Profile"
+                src="/images/passport1.png"
+                alt="Passport Photo"
                 fill
                 sizes="(max-width: 768px) 200px, 300px"
-                className="object-cover"
+                className="object-cover filter dark:brightness-90"
                 priority
               />
             </div>
@@ -49,14 +49,16 @@ export default function About() {
             className="w-full md:w-2/3"
           >
             <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-              Full-Stack Developer with 5+ Years Experience
+              Full-Stack Developer & Software Engineer
             </h3>
 
             <p className="text-gray-700 dark:text-gray-300 mb-6">
-              I'm a passionate full-stack developer specializing in building
-              exceptional digital experiences. With a focus on creating
-              responsive, accessible, and performant web applications, I bring
-              ideas to life through clean code and modern technologies.
+              I build robust, responsive web applications using React, Next.js,
+              Tailwind CSS, Python with Flask and SQLAlchemy, PostgreSQL, and
+              Laravel. From FlashLearn and BookNook to DogBreedFinder, I turn
+              ideas into polished, user-friendly products. I'm passionate about
+              clean code, continuous learning, and leveraging modern
+              technologies to solve real-world problems.
             </p>
 
             <div className="space-y-4 mb-6">
@@ -65,7 +67,7 @@ export default function About() {
                   <MapPin size={20} />
                 </div>
                 <span className="text-gray-700 dark:text-gray-300">
-                  San Francisco, CA (Remote)
+                  Nakuru & Kisii, Kenya
                 </span>
               </div>
 
@@ -74,7 +76,7 @@ export default function About() {
                   <Calendar size={20} />
                 </div>
                 <span className="text-gray-700 dark:text-gray-300">
-                  Available for freelance work
+                  Open to remote & local opportunities
                 </span>
               </div>
 
@@ -83,7 +85,7 @@ export default function About() {
                   <Award size={20} />
                 </div>
                 <span className="text-gray-700 dark:text-gray-300">
-                  BS in Computer Science
+                  IT Diploma (Egerton University) & Moringa School Bootcamp
                 </span>
               </div>
             </div>
@@ -113,34 +115,32 @@ export default function About() {
                 </summary>
                 <div className="pt-4">
                   <p className="text-gray-700 dark:text-gray-300">
-                    My journey in web development began with a curiosity about
-                    how websites work. That curiosity evolved into a passion for
-                    creating intuitive user interfaces and robust backend
-                    systems. I've worked with startups and established companies
-                    alike, helping them build products that users love.
+                    My journey started at Egerton University and Moringa School,
+                    where I honed my skills in software development. Since then,
+                    I've collaborated with startups and teams to launch features
+                    that drive engagement.
                   </p>
                   <p className="text-gray-700 dark:text-gray-300 mt-4">
-                    When I'm not coding, you can find me hiking, reading about
-                    new technologies, or contributing to open-source projects. I
-                    believe in continuous learning and staying updated with the
-                    latest industry trends.
+                    When I'm not coding, you'll find me at the gym pushing my
+                    limits, experimenting with new workout routines, or refining
+                    my diet to hit my fitness goals. I also contribute to
+                    open-source projects to give back to the community.
                   </p>
                 </div>
               </details>
             ) : (
               <>
                 <p className="text-gray-700 dark:text-gray-300 mb-4">
-                  My journey in web development began with a curiosity about how
-                  websites work. That curiosity evolved into a passion for
-                  creating intuitive user interfaces and robust backend systems.
-                  I've worked with startups and established companies alike,
-                  helping them build products that users love.
+                  My journey started at Egerton University and Moringa School,
+                  where I honed my skills in software development. Since then,
+                  I've collaborated with startups and teams to launch features
+                  that drive engagement.
                 </p>
                 <p className="text-gray-700 dark:text-gray-300">
-                  When I'm not coding, you can find me hiking, reading about new
-                  technologies, or contributing to open-source projects. I
-                  believe in continuous learning and staying updated with the
-                  latest industry trends.
+                  When I'm not coding, you'll find me at the gym pushing my
+                  limits, experimenting with new workout routines, or refining
+                  my diet to hit my fitness goals. I also contribute to
+                  open-source projects to give back to the community.
                 </p>
               </>
             )}
