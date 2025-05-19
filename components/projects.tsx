@@ -17,7 +17,46 @@ const projects = [
     github: "https://github.com/kabakadev/weather-frontend",
     demo: "https://weather-frontend-umber.vercel.app/",
   },
-  // …other projects
+  {
+    id: 2,
+    title: "Book Nook",
+    description:
+      "A React & Vite reading list manager. Create, view, and organize your favorite books with ease.",
+    image: "/images/project_images/booknook.png",
+    tags: ["React", "Vite", "Tailwind CSS"],
+    github: "https://github.com/kabakadev/book_app_frontend",
+    demo: "https://booknook254.netlify.app/",
+  },
+  {
+    id: 3,
+    title: "FlashLearn",
+    description:
+      "An AI-powered flashcard app with user authentication, deck & card management, and performance stats.",
+    image: "/images/project_images/flashlearn.png",
+    tags: ["React", "Vite", "Tailwind CSS", "JWT Auth"],
+    github: "https://github.com/kabakadev/flashlearn-frontend",
+    demo: "https://flashlearn254.netlify.app/",
+  },
+  {
+    id: 4,
+    title: "Dog Breed Finder",
+    description:
+      "Search and learn about dog breeds in this responsive React app.",
+    image: "/images/project_images/dogfinder.png",
+    tags: ["React", "Tailwind CSS", "Dog API"],
+    github: "https://github.com/kabakadev/dogfinder",
+    demo: "https://dogsfinder.netlify.app/",
+  },
+  {
+    id: 5,
+    title: "Sneakers Showcase",
+    description:
+      "A React-based sneakers showcase highlighting popular sneaker models in a clean UI.",
+    image: "/images/project_images/sneaker.png",
+    tags: ["React", "Tailwind CSS"],
+    github: "https://github.com/kabakadev/sneakers-project-app",
+    demo: "https://kabakadev.github.io/sneakers-project-app/",
+  },
 ];
 
 export default function Projects() {
