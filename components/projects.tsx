@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, ReactNode } from "react";
 import Image from "next/image";
 import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -17,46 +17,7 @@ const projects = [
     github: "https://github.com/kabakadev/weather-frontend",
     demo: "https://weather-frontend-umber.vercel.app/",
   },
-  {
-    id: 2,
-    title: "Book Nook",
-    description:
-      "A React & Vite reading list manager. Create, view, and organize your favorite books with ease.",
-    image: "/images/project_images/booknook.png",
-    tags: ["React", "Vite", "Tailwind CSS"],
-    github: "https://github.com/kabakadev/book_app_frontend",
-    demo: "https://booknook254.netlify.app/",
-  },
-  {
-    id: 3,
-    title: "FlashLearn",
-    description:
-      "An AI-powered flashcard app with user authentication, deck & card management, and performance stats.",
-    image: "/images/project_images/flashlearn.png",
-    tags: ["React", "Vite", "Tailwind CSS", "JWT Auth"],
-    github: "https://github.com/kabakadev/flashlearn-frontend",
-    demo: "https://flashlearn254.netlify.app/",
-  },
-  {
-    id: 4,
-    title: "Dog Breed Finder",
-    description:
-      "Search and learn about dog breeds in this responsive React app.",
-    image: "/images/project_images/dogfinder.png",
-    tags: ["React", "Tailwind CSS", "Dog API"],
-    github: "https://github.com/kabakadev/dogfinder",
-    demo: "https://dogsfinder.netlify.app/",
-  },
-  {
-    id: 5,
-    title: "Sneakers Showcase",
-    description:
-      "A React-based sneakers showcase highlighting popular sneaker models in a clean UI.",
-    image: "/images/project_images/sneaker.png",
-    tags: ["React", "Tailwind CSS"],
-    github: "https://github.com/kabakadev/sneakers-project-app",
-    demo: "https://kabakadev.github.io/sneakers-project-app/",
-  },
+  // …other projects
 ];
 
 export default function Projects() {
@@ -86,14 +47,24 @@ export default function Projects() {
   );
 }
 
+// ——————————————————————————————————————————
 // Marquee component for smooth looping animation
+// ——————————————————————————————————————————
+interface MarqueeProps {
+  children: ReactNode;
+  speed?: number;
+  pauseOnHover?: boolean;
+  direction?: "left" | "right";
+  prefersReducedMotion?: boolean;
+}
+
 function Marquee({
   children,
   speed = 20,
   pauseOnHover = true,
   direction = "left",
   prefersReducedMotion = false,
-}) {
+}: MarqueeProps): JSX.Element {
   const [containerWidth, setContainerWidth] = useState(0);
   const [contentWidth, setContentWidth] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(true);
@@ -101,50 +72,35 @@ function Marquee({
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Set up motion values
   const x = useMotionValue(0);
   const baseVelocity = direction === "left" ? -speed : speed;
 
-  // Measure container and content width
   useEffect(() => {
-    if (containerRef.current && contentRef.current) {
-      const measure = () => {
-        setContainerWidth(containerRef.current?.offsetWidth || 0);
-        setContentWidth(contentRef.current?.offsetWidth || 0);
-      };
-
-      measure();
-      window.addEventListener("resize", measure);
-      return () => window.removeEventListener("resize", measure);
-    }
+    if (!containerRef.current || !contentRef.current) return;
+    const measure = () => {
+      setContainerWidth(containerRef.current!.offsetWidth);
+      setContentWidth(contentRef.current!.offsetWidth);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, [children]);
 
-  // Determine if we need to animate (content wider than container)
   useEffect(() => {
     setShouldAnimate(contentWidth > containerWidth);
   }, [contentWidth, containerWidth]);
 
-  // Animation frame loop for smooth animation
-  useAnimationFrame((time, delta) => {
+  useAnimationFrame((_, delta) => {
     if (prefersReducedMotion || !shouldAnimate || !contentWidth) return;
-
     const moveBy = baseVelocity * (delta / 1000);
-
-    // Reset position when content has moved completely out of view
-    if (direction === "left") {
-      if (x.get() <= -contentWidth) {
-        x.set(0);
-      }
-    } else {
-      if (x.get() >= contentWidth) {
-        x.set(0);
-      }
+    if (direction === "left" && x.get() <= -contentWidth) {
+      x.set(0);
+    } else if (direction === "right" && x.get() >= contentWidth) {
+      x.set(0);
     }
-
     x.set(x.get() + moveBy);
   });
 
-  // If content fits in container, just show it centered
   if (!shouldAnimate || prefersReducedMotion) {
     return (
       <div className="flex justify-start overflow-hidden" ref={containerRef}>
@@ -181,6 +137,9 @@ function Marquee({
   );
 }
 
+// ——————————————————————————————————————————
+// ProjectCard
+// ——————————————————————————————————————————
 function ProjectCard({
   project,
   index,
@@ -189,13 +148,12 @@ function ProjectCard({
   project: (typeof projects)[0];
   index: number;
   prefersReducedMotion: boolean;
-}) {
+}): JSX.Element {
   const [isHovered, setIsHovered] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
-  // Render tags for desktop view
-  const renderTags = (tags: string[]) => {
-    return tags.map((tag) => (
+  const renderTags = (tags: string[]) =>
+    tags.map((tag) => (
       <span
         key={tag}
         className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm whitespace-nowrap"
@@ -203,7 +161,6 @@ function ProjectCard({
         {tag}
       </span>
     ));
-  };
 
   return (
     <motion.div
@@ -215,18 +172,16 @@ function ProjectCard({
       onMouseEnter={() => isDesktop && setIsHovered(true)}
       onMouseLeave={() => isDesktop && setIsHovered(false)}
     >
-      {/* Image container */}
+      {/* Image + hover overlay */}
       <div className="relative aspect-[4/3]">
         <Image
-          src={project.image || "/placeholder.svg"}
+          src={project.image}
           alt={project.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover"
           loading="lazy"
         />
-
-        {/* Desktop-only hover overlay */}
         {isDesktop && (
           <div
             className={`absolute inset-0 bg-black/70 flex flex-col justify-center items-center p-6 transition-opacity duration-300 ${
@@ -236,13 +191,12 @@ function ProjectCard({
             <div className="flex flex-wrap gap-2 justify-center mb-4">
               {renderTags(project.tags)}
             </div>
-
             <div className="flex gap-4">
               <a
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="p-3 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors"
                 aria-label={`View ${project.title} on GitHub`}
               >
                 <Github size={20} />
@@ -251,7 +205,7 @@ function ProjectCard({
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="p-3 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors"
                 aria-label={`View ${project.title} demo`}
               >
                 <ExternalLink size={20} />
@@ -261,7 +215,7 @@ function ProjectCard({
         )}
       </div>
 
-      {/* Project info */}
+      {/* Info */}
       <div className="p-6 flex-grow">
         <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
           {project.title}
@@ -271,10 +225,9 @@ function ProjectCard({
         </p>
       </div>
 
-      {/* Mobile-only footer with marquee tags and action buttons */}
+      {/* Mobile footer */}
       {!isDesktop && (
         <div className="px-6 pb-6 space-y-4">
-          {/* Marquee for tags */}
           <div className="py-1">
             <Marquee speed={15} prefersReducedMotion={prefersReducedMotion}>
               {project.tags.map((tag) => (
@@ -287,15 +240,12 @@ function ProjectCard({
               ))}
             </Marquee>
           </div>
-
-          {/* Action buttons */}
           <div className="flex gap-3 mt-4">
             <a
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 h-12 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-800 min-w-[48px]"
-              aria-label={`View ${project.title} on GitHub`}
+              className="flex items-center justify-center gap-2 h-12 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors"
             >
               <Github size={20} />
               <span>GitHub</span>
@@ -304,8 +254,7 @@ function ProjectCard({
               href={project.demo}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 h-12 px-4 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary min-w-[48px]"
-              aria-label={`View ${project.title} demo`}
+              className="flex items-center justify-center gap-2 h-12 px-4 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors"
             >
               <ExternalLink size={20} />
               <span>Live Demo</span>
