@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ExternalLink, Github } from "lucide-react";
 
 const projects = [
-  // Top Strong Projects
   {
     id: 1,
     title: "Weather Forecast",
@@ -38,7 +37,6 @@ const projects = [
     github: "https://github.com/kabakadev/flashlearn-frontend",
     demo: "https://flashlearn254.netlify.app/",
   },
-  // Secondary Projects
   {
     id: 4,
     title: "Dog Breed Finder",
@@ -88,6 +86,101 @@ export default function Projects() {
   );
 }
 
+// Marquee component for smooth looping animation
+function Marquee({
+  children,
+  speed = 20,
+  pauseOnHover = true,
+  direction = "left",
+  prefersReducedMotion = false,
+}) {
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [contentWidth, setContentWidth] = useState(0);
+  const [shouldAnimate, setShouldAnimate] = useState(true);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Set up motion values
+  const x = useMotionValue(0);
+  const baseVelocity = direction === "left" ? -speed : speed;
+
+  // Measure container and content width
+  useEffect(() => {
+    if (containerRef.current && contentRef.current) {
+      const measure = () => {
+        setContainerWidth(containerRef.current?.offsetWidth || 0);
+        setContentWidth(contentRef.current?.offsetWidth || 0);
+      };
+
+      measure();
+      window.addEventListener("resize", measure);
+      return () => window.removeEventListener("resize", measure);
+    }
+  }, [children]);
+
+  // Determine if we need to animate (content wider than container)
+  useEffect(() => {
+    setShouldAnimate(contentWidth > containerWidth);
+  }, [contentWidth, containerWidth]);
+
+  // Animation frame loop for smooth animation
+  useAnimationFrame((time, delta) => {
+    if (prefersReducedMotion || !shouldAnimate || !contentWidth) return;
+
+    const moveBy = baseVelocity * (delta / 1000);
+
+    // Reset position when content has moved completely out of view
+    if (direction === "left") {
+      if (x.get() <= -contentWidth) {
+        x.set(0);
+      }
+    } else {
+      if (x.get() >= contentWidth) {
+        x.set(0);
+      }
+    }
+
+    x.set(x.get() + moveBy);
+  });
+
+  // If content fits in container, just show it centered
+  if (!shouldAnimate || prefersReducedMotion) {
+    return (
+      <div className="flex justify-start overflow-hidden" ref={containerRef}>
+        <div ref={contentRef} className="flex gap-2">
+          {children}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="flex overflow-hidden relative"
+      ref={containerRef}
+      onMouseEnter={() => pauseOnHover && setShouldAnimate(false)}
+      onMouseLeave={() => pauseOnHover && setShouldAnimate(true)}
+      onTouchStart={() => setShouldAnimate(false)}
+      onTouchEnd={() => setShouldAnimate(true)}
+    >
+      <motion.div
+        ref={contentRef}
+        className="flex gap-2 min-w-max"
+        style={{ x }}
+      >
+        {children}
+      </motion.div>
+      <motion.div
+        className="flex gap-2 min-w-max absolute left-full"
+        style={{ x }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
 function ProjectCard({
   project,
   index,
@@ -98,25 +191,18 @@ function ProjectCard({
   prefersReducedMotion: boolean;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [showTags, setShowTags] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
-  // Animation variants for the tag container
-  const tagContainerVariants = {
-    hidden: {
-      height: 0,
-      opacity: 0,
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.2,
-      },
-    },
-    visible: {
-      height: "auto",
-      opacity: 1,
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.3,
-      },
-    },
+  // Render tags for desktop view
+  const renderTags = (tags: string[]) => {
+    return tags.map((tag) => (
+      <span
+        key={tag}
+        className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm whitespace-nowrap"
+      >
+        {tag}
+      </span>
+    ));
   };
 
   return (
@@ -148,14 +234,7 @@ function ProjectCard({
             }`}
           >
             <div className="flex flex-wrap gap-2 justify-center mb-4">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm"
-                >
-                  {tag}
-                </span>
-              ))}
+              {renderTags(project.tags)}
             </div>
 
             <div className="flex gap-4">
@@ -192,23 +271,25 @@ function ProjectCard({
         </p>
       </div>
 
-      {/* Mobile-only footer with tags and action buttons - always visible */}
+      {/* Mobile-only footer with marquee tags and action buttons */}
       {!isDesktop && (
         <div className="px-6 pb-6 space-y-4">
-          {/* Technology tags - always visible */}
-          <div className="flex flex-wrap gap-2 mb-3">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
-              >
-                {tag}
-              </span>
-            ))}
+          {/* Marquee for tags */}
+          <div className="py-1">
+            <Marquee speed={15} prefersReducedMotion={prefersReducedMotion}>
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm whitespace-nowrap"
+                >
+                  {tag}
+                </span>
+              ))}
+            </Marquee>
           </div>
 
-          {/* Action buttons - always visible */}
-          <div className="flex gap-3">
+          {/* Action buttons */}
+          <div className="flex gap-3 mt-4">
             <a
               href={project.github}
               target="_blank"

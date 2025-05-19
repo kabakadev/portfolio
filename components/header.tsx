@@ -125,7 +125,7 @@ export default function Header() {
           className="text-xl font-bold text-gray-900 dark:text-white"
           onClick={() => setIsOpen(false)}
         >
-          <span className="text-primary">Dev</span>Portfolio
+          Kabaka<span className="text-primary">Dev</span>
         </Link>
 
         {/* Mobile menu button and theme toggle */}

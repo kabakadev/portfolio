@@ -67,7 +67,7 @@ export default function About() {
                   <MapPin size={20} />
                 </div>
                 <span className="text-gray-700 dark:text-gray-300">
-                  Nakuru & Kisii, Kenya
+                  Nakuru & Nairobi, Kenya
                 </span>
               </div>
 

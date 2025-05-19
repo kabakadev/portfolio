@@ -13,7 +13,7 @@ export default function Footer() {
               href="/"
               className="text-xl font-bold text-gray-900 dark:text-white"
             >
-              <span className="text-primary">Dev</span>Portfolio
+              Kabaka<span className="text-primary">Dev</span>
             </Link>
             <p className="mt-2 text-gray-600 dark:text-gray-400 max-w-md">
               Building modern, responsive, and accessible web applications with
@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-end">
             <div className="flex gap-4 mb-4">
               <a
-                href="https://github.com"
+                href="https://github.com/kabakadev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
 
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              © {currentYear} DevPortfolio. All rights reserved.
+              © {currentYear} KabakaDev. All rights reserved.
             </p>
           </div>
         </div>
