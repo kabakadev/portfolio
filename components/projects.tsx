@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, ReactNode } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -214,7 +214,7 @@ function ProjectCard({
       {/* Image + hover overlay */}
       <div className="relative aspect-[4/3]">
         <Image
-          src={project.image}
+          src={project.image || "/placeholder.svg"}
           alt={project.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -268,7 +268,7 @@ function ProjectCard({
       {!isDesktop && (
         <div className="px-6 pb-6 space-y-4">
           <div className="py-1">
-            <Marquee speed={15} prefersReducedMotion={prefersReducedMotion}>
+            <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
@@ -277,7 +277,7 @@ function ProjectCard({
                   {tag}
                 </span>
               ))}
-            </Marquee>
+            </div>
           </div>
           <div className="flex gap-3 mt-4">
             <a
