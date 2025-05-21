@@ -33,7 +33,7 @@ export default function Footer() {
                 <Github size={20} />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/ian-kabaka/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -42,7 +42,7 @@ export default function Footer() {
                 <Linkedin size={20} />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/justin_hunter91"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
